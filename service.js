@@ -14,6 +14,7 @@ angular.module("reddit").service('FirebaseService', function($http, $q){
 	}	
 
 	this.voteData = function(post, direction) {
+		var deferred = $q.defer();
 		if(direction === "up") {
 			post.karma++;
 		}
@@ -32,7 +33,7 @@ angular.module("reddit").service('FirebaseService', function($http, $q){
 	}
 	
 	this.postComment = function(postID, commentObj) {
-		$http({
+	 	return $http({
 			method: "POST",
 			url: "https://devmtn.firebaseio.com/posts/" + postID + '/comments.json',
 			data: {comments: commentObj}
@@ -57,7 +58,7 @@ angular.module("reddit").service('FirebaseService', function($http, $q){
 		post.id = guid();
 		$http({
 			method: "PUT",
-			url: "https://devmtn.firebaseio.com/posts/" + postId + '.json', 
+			url: "https://devmtn.firebaseio.com/posts/" + post.id + '.json', 
 			data: post
 		}).then(function(response){
 			deferred.resolve(response.data);
